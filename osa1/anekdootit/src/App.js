@@ -13,17 +13,56 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
+  const [mostVotes, setMostVotes] = useState(0)
+  const [allVotes, setVotes] = useState(new Uint8Array(anecdotes.length))
+  // const votes = new Array(anecdotes.length);
+  // for (let i=0;i<anecdotes.length;++i) votes[i] = 0;
 
   const getRandom = (max) => {
     const rand = Math.floor(Math.random()*max) // [0, max)
     // console.log(rand)
     return(rand)
   }
+  
+  const vote = (sel) => {
+    const copy = [...allVotes]
+    copy[sel] += 1
+    setVotes(copy)
+    
+    // Etsitään ja tallennetaan uuden maksimin paikka
+    /* let max = 0
+    let maxIndex = 0
+    for (let index = 1; index < copy.length; index++) {
+      if (max < copy[index]) {
+        max = copy[index]
+        maxIndex = index
+      }
+    }
+    setMostVotes(maxIndex)
+    */
+    if (copy[sel] > mostVotes) setMostVotes(sel)
+
+    return(copy)
+  }
 
   return (
     <div>
-      {anecdotes[selected]}
+      <h1>Anecdote of the day</h1>
+      <Anecdote text={anecdotes[selected]} votes={allVotes[selected]} />
+      <button onClick={() => vote(selected)}>Vote!</button>
       <button onClick={() => setSelected(getRandom(anecdotes.length))}>Next anecdote</button>
+      <h1>Anecdote with the most votes</h1>
+      <Anecdote text={anecdotes[mostVotes]} votes={allVotes[mostVotes]} />
+    </div>
+  )
+}
+
+// Huolehtii vain anekdoottitekstin ja äänimäärän näyttämisestä allekkain
+const Anecdote = ({text, votes}) => {
+  return (
+    <div>
+      <p>{text}</p>
+      <p>has {votes} votes.</p>
     </div>
   )
 }
