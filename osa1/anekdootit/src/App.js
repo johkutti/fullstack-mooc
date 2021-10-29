@@ -20,7 +20,6 @@ const App = () => {
 
   const getRandom = (max) => {
     const rand = Math.floor(Math.random()*max) // [0, max)
-    // console.log(rand)
     return(rand)
   }
   
@@ -28,18 +27,7 @@ const App = () => {
     const copy = [...allVotes]
     copy[sel] += 1
     setVotes(copy)
-    
-    // Etsitään ja tallennetaan uuden maksimin paikka
-    /* let max = 0
-    let maxIndex = 0
-    for (let index = 1; index < copy.length; index++) {
-      if (max < copy[index]) {
-        max = copy[index]
-        maxIndex = index
-      }
-    }
-    setMostVotes(maxIndex)
-    */
+
     if (copy[sel] > mostVotes) setMostVotes(sel)
 
     return(copy)
